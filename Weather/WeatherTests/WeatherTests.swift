@@ -1,14 +1,14 @@
 //
-//  WeatherAppTests.swift
-//  WeatherAppTests
+//  WeatherTests.swift
+//  WeatherTests
 //
 //  Created by Hong yujin on 3/18/24.
 //
 
 import XCTest
-@testable import WeatherApp
+@testable import Weather
 
-final class WeatherAppTests: XCTestCase {
+final class WeatherTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
