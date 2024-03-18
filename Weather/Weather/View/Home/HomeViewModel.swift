@@ -15,6 +15,7 @@ class HomeViewModel: ObservableObject {
     
     @Published var forecast: [Weather] = []
     @Published var weather: Weather?
+    @Published var phase: Phase = .notRequested
  
     private var container: DIContainer
     var cancellables: Set<AnyCancellable> = []
@@ -27,21 +28,21 @@ class HomeViewModel: ObservableObject {
     func send(action: Action) {
         switch action {
         case .getWeather:
-            container.services.weatherService.getWeather()
-                .sink { com in
-                    
-                } receiveValue: { [weak self] response in
-                    self?.weather = response
-                }.store(in: &cancellables)
-            
-            container.services.weatherService.getForecast()
-                .sink { com in
-                    
-                } receiveValue: { [weak self] response in
-                    if let list = response.list {
-                        self?.forecast = list
-                    }
-                }.store(in: &cancellables)
+            phase = .loading
+            Publishers.Zip(container.services.weatherService.getWeather(),
+                           container.services.weatherService.getForecast())
+            .sink { [weak self] completion in
+                switch completion {
+                case .failure(let error):
+                    self?.phase = .fail(error)
+                default: break
+                }
+            } receiveValue: { [weak self] (weather, forecaseWeather) in
+                self?.weather = weather
+                self?.forecast = forecaseWeather.list ?? []
+                self?.phase = .success
+            }.store(in: &cancellables)
+
             return
         }
     }

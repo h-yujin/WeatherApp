@@ -25,7 +25,7 @@ class WeatherRepository: WeatherRepositoryType {
         apiController.fetchData(.weather(lat: Constant.defaultLat, lng: Constant.defaultLng))
             .tryMap { dataResponse in
                 guard let weatherObject = dataResponse.value else {
-                    throw dataResponse.error ?? NetworkError.unknown
+                    throw dataResponse.error ?? NetworkError.emptyValue
                 }
                 return weatherObject
             }
@@ -43,7 +43,7 @@ class WeatherRepository: WeatherRepositoryType {
         apiController.fetchData(.forecast(lat: Constant.defaultLat, lng: Constant.defaultLng))
             .tryMap { dataResponse in
                 guard let weatherObject = dataResponse.value else {
-                    throw dataResponse.error ?? NetworkError.unknown
+                    throw dataResponse.error ?? NetworkError.emptyValue
                 }
                 return weatherObject
             }

@@ -16,6 +16,7 @@ enum APIController {
 }
 
 extension APIController {
+    
     var baseURL: URL {
         return URL(string: Constant.baseUrl)!
     }
@@ -46,21 +47,18 @@ extension APIController {
             url += api.path
             parameters.updateValue(lat, forKey: "lat")
             parameters.updateValue(lon, forKey: "lon")
-            
         }
         
 
-        return AF.request(url,
-                          method: method,
-                          parameters: parameters)
-        .publishDecodable(type: WeatherObject.self)
-        .map { response in
-            print(response)
-            return response.mapError { error in
-                return NetworkError.error(error)
+        return AF.request(url, method: method,parameters: parameters)
+            .validate()
+            .publishDecodable(type: WeatherObject.self)
+            .map { response in
+                response.mapError { error in
+                    return NetworkError.error(error)
+                }
             }
-        }
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
         
     }
 }

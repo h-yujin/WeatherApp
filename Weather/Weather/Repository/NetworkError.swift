@@ -10,4 +10,5 @@ import Foundation
 public enum NetworkError: Error {
     case error(Error)
     case unknown
+    case emptyValue
 }

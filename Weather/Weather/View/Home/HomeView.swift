@@ -13,15 +13,24 @@ struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
     
     var body: some View {
-        VStack {
-            detailView
-                .padding(.top, 50)
-            listView
-                .padding(.bottom, 50)
-        }
-        .background(Color.coralBg)
-        .onAppear{
-            viewModel.send(action: .getWeather)
+        switch viewModel.phase {
+        case .notRequested:
+            PlaceholderView()
+                .onAppear{
+                    viewModel.send(action: .getWeather)
+                }
+        case .loading:
+            LoadingView()
+        case .success:
+            VStack {
+                detailView
+                    .padding(.top, 50)
+                listView
+                    .padding(.bottom, 50)
+            }
+            .background(Color.coralBg)
+        case .fail(let error):
+            ErrorView(errorMessage: error.localizedDescription)
         }
     }
     
