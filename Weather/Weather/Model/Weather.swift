@@ -10,12 +10,15 @@ import Foundation
 struct Weather: Identifiable {
     var id: String
     
+    var iconUrl: String?
+    var description: String?
+    
     var temp: Float?
     var tempMin: Float?
     var tempMax: Float?
     var humidity: Int?
     
-    var description: String?
+    
 }
 extension Weather {
 

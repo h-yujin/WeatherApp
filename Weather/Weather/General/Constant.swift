@@ -17,4 +17,6 @@ extension Constant {
     static let forecastUrl = "/forecast"
     static let defaultLat: Float = 37.5
     static let defaultLng: Float = 126.8
+    static let imageUrlPrefix = "https://openweathermap.org/img/wn/"
+    static let imageUrlSuffix = "@2x.png"
 }

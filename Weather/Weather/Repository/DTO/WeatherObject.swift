@@ -9,6 +9,7 @@ import Foundation
 
 struct WeatherObject: Decodable {
     var base: String
+    
     var main: WeatherMainObject?
     var info: [WeatherInfoObject]?
     
@@ -35,15 +36,17 @@ struct WeatherMainObject: Decodable {
 
 struct WeatherInfoObject: Decodable {
     let description: String?
+    var icon: String?
 }
 
 extension WeatherObject {
     func toModel() -> Weather {
         return Weather(id: UUID().uuidString,
-                       temp: main?.temp,
-                       tempMin: main?.tempMin,
-                       tempMax: main?.tempMax,
-                       humidity: main?.humidity,
-                       description: info?[0].description)
+                       iconUrl: Constant.imageUrlPrefix + (info?[0].icon ?? "") + Constant.imageUrlSuffix,
+                       description: info?[0].description,
+                       temp: main?.temp?.kelvinToCelsius(),
+                       tempMin: main?.tempMin?.kelvinToCelsius(),
+                       tempMax: main?.tempMax?.kelvinToCelsius(),
+                       humidity: main?.humidity)
     }
 }

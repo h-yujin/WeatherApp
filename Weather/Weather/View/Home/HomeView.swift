@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct HomeView: View {
     @EnvironmentObject var container: DIContainer
@@ -13,12 +14,11 @@ struct HomeView: View {
     
     var body: some View {
         VStack {
-            Spacer(minLength: 50)
             detailView
-            Spacer(minLength: 50)
+            Spacer()
             listView
-            Spacer(minLength: 60)
         }
+        .padding(.init(top: 50, leading: 0, bottom: 50, trailing: 0))
         .background(Color.coralBg)
         .onAppear{
             viewModel.send(action: .getWeather)
@@ -28,36 +28,38 @@ struct HomeView: View {
     
     var detailView: some View {
         VStack(spacing: 15) {
-            Text("오늘 날짜")
+            Text(Date().toDateString)
                 .foregroundColor(.black)
                 .font(.system(size: 17))
-                
+                .padding(.top, 50)
             
-            Image(systemName: "sun.max")
+            KFImage(URL(string: viewModel.weather?.iconUrl ?? ""))
                 .resizable()
-                .frame(width: 80, height: 80)
+                .frame(width: 150, height: 150)
                 .padding(.top, 20)
                 .padding(.bottom, 40)
             
             Text(viewModel.weather?.description ?? "")
                 .foregroundColor(.black)
-                .font(.system(size: 17))
+                .font(.system(size: 17, weight: .bold))
             
-            Text("Current \(Int(viewModel.weather?.temp ?? 0))°C")
+            Text("현재기온 \(Int(viewModel.weather?.temp ?? 0))°C")
                 .foregroundColor(.black)
                 .font(.system(size: 14))
             
-            Text("Highest \(Int(viewModel.weather?.tempMax ?? 0))°C")
+            Text("최고기온 \(Int(viewModel.weather?.tempMax ?? 0))°C")
                 .foregroundColor(.black)
                 .font(.system(size: 14))
             
-            Text("Lowest \(Int(viewModel.weather?.tempMin ?? 0))°C")
+            Text("최저기온 \(Int(viewModel.weather?.tempMin ?? 0))°C")
                 .foregroundColor(.black)
                 .font(.system(size: 14))
             
-            Text("Humidity \(Int(viewModel.weather?.humidity ?? 0))%")
+            Text("습도 \(Int(viewModel.weather?.humidity ?? 0))%")
                 .foregroundColor(.black)
                 .font(.system(size: 14))
+                .padding(.bottom, 50)
+            
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -104,7 +106,8 @@ struct HomeView: View {
                 }
             }
             .padding(.horizontal, 20)
-            .frame(height: 100)
+            .frame(height: 200)
+            
         }
     }
 }
