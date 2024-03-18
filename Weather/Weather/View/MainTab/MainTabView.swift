@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var container: DIContainer
     @State  private var selectedTab: MainTabType = .home
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             ForEach(MainTabType.allCases, id: \.self) { tab in
                 Group {
                     switch tab {
                     case .home:
-                        HomeView()
+                        HomeView(viewModel: .init(container: container))
                     case .weak:
                         WeakView()
                     case .search:
@@ -30,6 +32,7 @@ struct MainTabView: View {
         }
         .tint(Color.black)
     }
+    
 }
 
 #Preview {
