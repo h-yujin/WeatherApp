@@ -15,10 +15,10 @@ struct HomeView: View {
     var body: some View {
         VStack {
             detailView
-            Spacer()
+                .padding(.top, 50)
             listView
+                .padding(.bottom, 50)
         }
-        .padding(.init(top: 50, leading: 0, bottom: 50, trailing: 0))
         .background(Color.coralBg)
         .onAppear{
             viewModel.send(action: .getWeather)
@@ -79,26 +79,28 @@ struct HomeView: View {
     var listView: some View {
         ScrollView(.horizontal) {
             LazyHStack {
-                ForEach(viewModel.todays, id: \.id) { today in
+                ForEach(viewModel.forecast, id: \.id) { item in
                     VStack(spacing: 5) {
-                        Text("시간")
+                        Text(item.dateText?.toHourMinute() ?? "")
                             .foregroundColor(.black)
                             .font(.system(size: 14))
                             .padding(.top, 20)
                         
-                        Image(systemName: "sun.max")
+                        KFImage(URL(string: item.iconUrl ?? ""))
                             .resizable()
                             .frame(width: 30, height: 30)
                         
-                        Text("discription")
+                        Text("\(Int(item.temp ?? 0))°C")
                             .foregroundColor(.black)
                             .font(.system(size: 12))
                             .padding(.bottom, 10)
                         
                     }
                     .frame(width: 100)
+                    .background(.white)
+                    .cornerRadius(10)
                     .overlay {
-                        RoundedRectangle(cornerRadius: 5)
+                        RoundedRectangle(cornerRadius: 10)
                             .foregroundColor(.white)
                             .shadow(color: .gray, radius: 1, x: 1, y: 1)
                             .opacity(0.3)
@@ -107,8 +109,8 @@ struct HomeView: View {
             }
             .padding(.horizontal, 20)
             .frame(height: 200)
-            
         }
+        .scrollIndicators(.hidden)
     }
 }
 

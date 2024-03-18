@@ -13,7 +13,7 @@ class HomeViewModel: ObservableObject {
         case getWeather
     }
     
-    @Published var todays: [Weather] = [.stub1, .stub2, .stub3, .stub4]
+    @Published var forecast: [Weather] = []
     @Published var weather: Weather?
  
     private var container: DIContainer
@@ -29,9 +29,18 @@ class HomeViewModel: ObservableObject {
         case .getWeather:
             container.services.weatherService.getWeather()
                 .sink { com in
-                    print(com)
+                    
                 } receiveValue: { [weak self] response in
                     self?.weather = response
+                }.store(in: &cancellables)
+            
+            container.services.weatherService.getForecast()
+                .sink { com in
+                    
+                } receiveValue: { [weak self] response in
+                    if let list = response.list {
+                        self?.forecast = list
+                    }
                 }.store(in: &cancellables)
             return
         }

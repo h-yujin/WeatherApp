@@ -11,6 +11,7 @@ import Alamofire
 
 protocol WeatherRepositoryType {
     func getWeather()  -> AnyPublisher<WeatherObject, NetworkError>
+    func getForecast()  -> AnyPublisher<WeatherObject, NetworkError>
 }
 
 class WeatherRepository: WeatherRepositoryType {
@@ -36,6 +37,23 @@ class WeatherRepository: WeatherRepositoryType {
                 }
             }
             .eraseToAnyPublisher()
-        
+    }
+    
+    func getForecast()  -> AnyPublisher<WeatherObject, NetworkError> {
+        apiController.fetchData(.forecast(lat: Constant.defaultLat, lng: Constant.defaultLng))
+            .tryMap { dataResponse in
+                guard let weatherObject = dataResponse.value else {
+                    throw dataResponse.error ?? NetworkError.unknown
+                }
+                return weatherObject
+            }
+            .mapError { error in
+                if let networkError = error as? NetworkError {
+                    return networkError
+                } else {
+                    return NetworkError.unknown
+                }
+            }
+            .eraseToAnyPublisher()
     }
 }

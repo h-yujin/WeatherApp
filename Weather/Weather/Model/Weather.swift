@@ -17,11 +17,10 @@ struct Weather: Identifiable {
     var tempMin: Float?
     var tempMax: Float?
     var humidity: Int?
-    
-    
+    var dateText: String?
 }
-extension Weather {
 
+extension Weather {
     static var stub1: Weather {
         .init(id: "1")
     }

@@ -10,8 +10,8 @@ import Combine
 import Alamofire
 
 protocol WeatherServiceType {
-//    func getWeather() -> AnyPublisher<DataResponse<WeatherObject, NetworkError>, Never>
     func getWeather() -> AnyPublisher<Weather, NetworkError>
+    func getForecast() -> AnyPublisher<ForecaseWeather, NetworkError>
 }
 
 class WeatherService: WeatherServiceType {
@@ -23,9 +23,14 @@ class WeatherService: WeatherServiceType {
     }
    
     func getWeather() -> AnyPublisher<Weather, NetworkError> {
-        // WeatherObject -> WeatherModel
         weatherReposity.getWeather()
             .map { $0.toModel() }
+            .eraseToAnyPublisher()
+    }
+    
+    func getForecast() -> AnyPublisher<ForecaseWeather, NetworkError> {
+        weatherReposity.getForecast()
+            .map { $0.toModelList() }
             .eraseToAnyPublisher()
     }
 }
@@ -33,6 +38,10 @@ class WeatherService: WeatherServiceType {
 class StubWeatherService: WeatherServiceType {
   
     func getWeather() -> AnyPublisher<Weather, NetworkError> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func getForecast() -> AnyPublisher<ForecaseWeather, NetworkError> {
         Empty().eraseToAnyPublisher()
     }
 

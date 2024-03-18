@@ -12,6 +12,7 @@ import AlamofireNetworkActivityLogger
 
 enum APIController {
     case weather(lat: Float, lng: Float)
+    case forecast(lat: Float, lng: Float)
 }
 
 extension APIController {
@@ -22,40 +23,44 @@ extension APIController {
     var path: String {
         switch self {
         case .weather:
-            return Constant.currentUrl
+            return Constant.weatherUrl
+        case .forecast:
+            return Constant.forecastUrl
         }
     }
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .weather:
+        case .weather, .forecast:
             return .get
         }
     }
     
     
-    func fetchData(_ path: APIController)  -> AnyPublisher<DataResponse<WeatherObject, NetworkError>, Never> {
+    func fetchData(_ api: APIController)  -> AnyPublisher<DataResponse<WeatherObject, NetworkError>, Never> {
         NetworkActivityLogger.shared.startLogging()
         var url = "\(baseURL)"
         var parameters: Parameters = ["appid": Constant.appID]
-        switch path {
-        case .weather(lat: let lat, lng: let lon):
-            url += Constant.currentUrl
+        switch api {
+        case .weather(lat: let lat, lng: let lon), .forecast(lat: let lat, lng: let lon):
+            url += api.path
             parameters.updateValue(lat, forKey: "lat")
             parameters.updateValue(lon, forKey: "lon")
-
-            return AF.request(url,
-                              method: method,
-                              parameters: parameters)
-            .publishDecodable(type: WeatherObject.self)
-            .map { response in
-                print(response)
-                return response.mapError { error in
-                    return NetworkError.error(error)
-                }
-            }
-            .eraseToAnyPublisher()
+            
         }
+        
+
+        return AF.request(url,
+                          method: method,
+                          parameters: parameters)
+        .publishDecodable(type: WeatherObject.self)
+        .map { response in
+            print(response)
+            return response.mapError { error in
+                return NetworkError.error(error)
+            }
+        }
+        .eraseToAnyPublisher()
         
     }
 }

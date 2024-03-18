@@ -8,15 +8,19 @@
 import Foundation
 
 struct WeatherObject: Decodable {
-    var base: String
+    var base: String?
     
     var main: WeatherMainObject?
     var info: [WeatherInfoObject]?
+    var list: [WeatherObject]?
+    var dateText: String?
     
     enum CodingKeys: String, CodingKey {
         case base
         case main
         case info = "weather"
+        case list
+        case dateText = "dt_txt"
     }
 }
 
@@ -47,6 +51,12 @@ extension WeatherObject {
                        temp: main?.temp?.kelvinToCelsius(),
                        tempMin: main?.tempMin?.kelvinToCelsius(),
                        tempMax: main?.tempMax?.kelvinToCelsius(),
-                       humidity: main?.humidity)
+                       humidity: main?.humidity,
+                       dateText: dateText ?? "")
+    }
+    
+    func toModelList() -> ForecaseWeather {
+        let list = list ?? []
+        return ForecaseWeather(list: Array(list.map {$0.toModel()}))
     }
 }
