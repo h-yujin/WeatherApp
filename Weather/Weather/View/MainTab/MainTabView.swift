@@ -33,6 +33,9 @@ struct MainTabView: View {
         .tint(Color.black)
     }
     
+    init() {
+      UITabBar.appearance().unselectedItemTintColor = UIColor(Color.gray)
+    }
 }
 
 #Preview {
