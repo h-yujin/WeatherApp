@@ -21,7 +21,7 @@ struct MainTabView: View {
                     case .weak:
                         WeakView(viewModel: .init(container: container))
                     case .search:
-                        SearchView()
+                        SearchView(viewModel: .init(container: container))
                     }
                 }
                 .tabItem {

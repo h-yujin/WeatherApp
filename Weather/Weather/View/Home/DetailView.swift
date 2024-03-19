@@ -10,7 +10,6 @@ import Kingfisher
 
 struct DetailView: View {
     var title: String
-//    @StateObject var viewModel: HomeViewModel
     var weather: Weather = Weather()
     
     var body: some View {
@@ -49,7 +48,9 @@ struct DetailView: View {
             
             
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(width: UIScreen.main.bounds.width - 40, 
+               height: 500)
         .background(.white)
         .cornerRadius(50)
         .overlay {

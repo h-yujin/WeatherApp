@@ -9,7 +9,6 @@ import SwiftUI
 import Kingfisher
 
 struct HomeView: View {
-    @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: HomeViewModel
     
     var body: some View {

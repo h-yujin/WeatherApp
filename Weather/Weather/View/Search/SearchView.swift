@@ -8,11 +8,35 @@
 import SwiftUI
 
 struct SearchView: View {
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: SearchViewModel
+    
+    
     var body: some View {
-        Text("Search")
+        VStack {
+            SearchBar(text: $viewModel.searchText,
+                      shouldBecomFirstResponder: $viewModel.shouldBecomFirstResponder)
+            
+            resultView
+                .onTapGesture {
+                    viewModel.shouldBecomFirstResponder = false
+                }
+        }
+        .background(Color.mintBg)
+    }
+    
+    var resultView: some View {
+        VStack {
+            if viewModel.weather != nil {
+                DetailView(title: Date().toDateString,
+                           weather: viewModel.weather ?? Weather())
+            }
+            
+            Spacer()
+        }
     }
 }
 
 #Preview {
-    SearchView()
+    SearchView(viewModel: .init(container: DIContainer(services: StubService())))
 }

@@ -9,7 +9,6 @@ import SwiftUI
 import Kingfisher
 
 struct WeakView: View {
-    @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: WeakViewModel
     
     var body: some View {

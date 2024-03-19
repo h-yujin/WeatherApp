@@ -13,6 +13,7 @@ import AlamofireNetworkActivityLogger
 enum APIController {
     case weather(lat: Float, lng: Float)
     case forecast(lat: Float, lng: Float)
+    case cityWeather(search: String)
 }
 
 extension APIController {
@@ -23,7 +24,7 @@ extension APIController {
     
     var path: String {
         switch self {
-        case .weather:
+        case .weather, .cityWeather:
             return Constant.weatherUrl
         case .forecast:
             return Constant.forecastUrl
@@ -32,7 +33,7 @@ extension APIController {
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .weather, .forecast:
+        case .weather, .forecast, .cityWeather:
             return .get
         }
     }
@@ -40,13 +41,15 @@ extension APIController {
     
     func fetchData(_ api: APIController)  -> AnyPublisher<DataResponse<WeatherObject, NetworkError>, Never> {
         NetworkActivityLogger.shared.startLogging()
-        var url = "\(baseURL)"
-        var parameters: Parameters = ["appid": Constant.appID]
+        let url = "\(baseURL)\(api.path)"
+        var parameters: Parameters = ["appid": Constant.appID,
+                                      "lang": "kr"]
         switch api {
         case .weather(lat: let lat, lng: let lon), .forecast(lat: let lat, lng: let lon):
-            url += api.path
             parameters.updateValue(lat, forKey: "lat")
             parameters.updateValue(lon, forKey: "lon")
+        case .cityWeather(search: let search):
+            parameters.updateValue(search, forKey: "q")
         }
         
 

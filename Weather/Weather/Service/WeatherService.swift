@@ -12,6 +12,7 @@ import Alamofire
 protocol WeatherServiceType {
     func getWeather() -> AnyPublisher<Weather, NetworkError>
     func getForecast() -> AnyPublisher<ForecaseWeather, NetworkError>
+    func getCityWeather(search: String) -> AnyPublisher<Weather, NetworkError>
 }
 
 class WeatherService: WeatherServiceType {
@@ -33,6 +34,12 @@ class WeatherService: WeatherServiceType {
             .map { $0.toModelList() }
             .eraseToAnyPublisher()
     }
+    
+    func getCityWeather(search: String) -> AnyPublisher<Weather, NetworkError> {
+        weatherReposity.getCityWeather(search: search)
+            .map { $0.toModel() }
+            .eraseToAnyPublisher()
+    }
 }
 
 class StubWeatherService: WeatherServiceType {
@@ -45,4 +52,7 @@ class StubWeatherService: WeatherServiceType {
         Empty().eraseToAnyPublisher()
     }
 
+    func getCityWeather(search: String) -> AnyPublisher<Weather, NetworkError> {
+        Empty().eraseToAnyPublisher()
+    }
 }
