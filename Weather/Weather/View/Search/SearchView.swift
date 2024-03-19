@@ -18,9 +18,6 @@ struct SearchView: View {
                       shouldBecomFirstResponder: $viewModel.shouldBecomFirstResponder)
             
             resultView
-                .onTapGesture {
-                    viewModel.shouldBecomFirstResponder = false
-                }
         }
         .background(Color.mintBg)
     }
@@ -32,7 +29,12 @@ struct SearchView: View {
                            weather: viewModel.weather ?? Weather())
             }
             
-            Spacer()
+            Rectangle()
+                .fill(.clear)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            viewModel.shouldBecomFirstResponder = false
         }
     }
 }

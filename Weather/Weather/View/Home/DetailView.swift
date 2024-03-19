@@ -48,7 +48,6 @@ struct DetailView: View {
             
             
         }
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .frame(width: UIScreen.main.bounds.width - 40, 
                height: 500)
         .background(.white)
@@ -59,7 +58,6 @@ struct DetailView: View {
                 .shadow(color: .gray, radius: 1, x: 1, y: 1)
                 .opacity(0.3)
         }
-        
         .padding(.horizontal, 20)
     }
 }
