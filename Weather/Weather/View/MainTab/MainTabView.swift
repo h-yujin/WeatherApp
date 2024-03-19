@@ -19,7 +19,7 @@ struct MainTabView: View {
                     case .home:
                         HomeView(viewModel: .init(container: container))
                     case .weak:
-                        WeakView()
+                        WeakView(viewModel: .init(container: container))
                     case .search:
                         SearchView()
                     }

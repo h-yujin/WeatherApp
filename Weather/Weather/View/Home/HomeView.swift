@@ -89,31 +89,7 @@ struct HomeView: View {
         ScrollView(.horizontal) {
             LazyHStack {
                 ForEach(viewModel.forecast, id: \.id) { item in
-                    VStack(spacing: 5) {
-                        Text(item.dateText?.toHourMinute() ?? "")
-                            .foregroundColor(.black)
-                            .font(.system(size: 14))
-                            .padding(.top, 20)
-                        
-                        KFImage(URL(string: item.iconUrl ?? ""))
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                        
-                        Text("\(Int(item.temp ?? 0))°C")
-                            .foregroundColor(.black)
-                            .font(.system(size: 12))
-                            .padding(.bottom, 10)
-                        
-                    }
-                    .frame(width: 100)
-                    .background(.white)
-                    .cornerRadius(10)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(.white)
-                            .shadow(color: .gray, radius: 1, x: 1, y: 1)
-                            .opacity(0.3)
-                    }
+                    CellView(item: item)
                 }
             }
             .padding(.horizontal, 20)
@@ -123,6 +99,39 @@ struct HomeView: View {
     }
 }
 
+
+
+fileprivate struct CellView: View {
+    let item: Weather
+
+    var body: some View {
+        VStack(spacing: 5) {
+            Text(item.dateText?.toHourMinute() ?? "")
+                .foregroundColor(.black)
+                .font(.system(size: 14))
+                .padding(.top, 20)
+
+            KFImage(URL(string: item.iconUrl ?? ""))
+                .resizable()
+                .frame(width: 30, height: 30)
+
+            Text("\(Int(item.temp ?? 0))°C")
+                .foregroundColor(.black)
+                .font(.system(size: 12))
+                .padding(.bottom, 10)
+
+        }
+        .frame(width: 100)
+        .background(.white)
+        .cornerRadius(10)
+        .overlay {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(.white)
+                .shadow(color: .gray, radius: 1, x: 1, y: 1)
+                .opacity(0.3)
+        }
+    }
+}
 #Preview {
     HomeView(viewModel: .init(container: .init(services: StubService())))
 }

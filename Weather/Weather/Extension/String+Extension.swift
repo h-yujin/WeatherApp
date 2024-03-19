@@ -24,7 +24,7 @@ extension String {
         guard let date = dateFormatter.date(from: self) else {
             return nil
         }
-        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.dateFormat = "(E) HH:mm"
         let formattedString = dateFormatter.string(from: date)
         return formattedString
     }
