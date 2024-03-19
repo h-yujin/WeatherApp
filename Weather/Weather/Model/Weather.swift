@@ -8,7 +8,7 @@
 import Foundation
 
 struct Weather: Identifiable {
-    var id: String
+    var id: String?
     
     var iconUrl: String?
     var description: String?
