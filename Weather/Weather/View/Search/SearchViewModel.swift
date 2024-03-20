@@ -33,6 +33,7 @@ class SearchViewModel: ObservableObject {
             .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
             .sink {  [weak self] text in
                 if !text.isEmpty {
+                    self?.weather = nil
                     self?.send(action: .requestSearch(text))
                 }
             }.store(in: &cancellables)

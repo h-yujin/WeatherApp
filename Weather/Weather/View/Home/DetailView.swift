@@ -45,8 +45,6 @@ struct DetailView: View {
                 .foregroundColor(.black)
                 .font(.system(size: 14))
                 .padding(.bottom, 50)
-            
-            
         }
         .frame(width: UIScreen.main.bounds.width - 40, 
                height: 500)
