@@ -11,7 +11,7 @@
 
 :point_right: 클린 아키텍처   
 -------------
-- Data Layer : 네트워크 통신을 담당합니다. APIController가 실제 네트워크 통신을 담당하며, 결과를 Repository가 Domain Layer인 Service에 전달하게 됩니다.
+- Data Layer : 네트워크 통신을 담당합니다. APIController가 실제 네트워크 통신을 담당하며, 결과를 Domain Layer인 Service에 전달하게 됩니다.
 - Domain Layer : 앱의 비즈니스 로직을 담당합니다. Service가 여기에 해당됩니다. Repository로부터 전달받은 DTO를 Model로 변환하여 ViewModel에 전달합니다.
 - Presentation Layer : MVVM의 View와 ViewModel로 정의하여 UI 구현을 담당합니다.
 
